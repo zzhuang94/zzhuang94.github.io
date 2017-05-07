@@ -8,8 +8,12 @@ rm -rf build
 make html
 
 mv build/html/_static build/html/static
-sed -i "s/_static/static/g" `grep "<script" -rl build/html`
-sed -i "s/_static/static/g" `grep "<link" -rl build/html`
+sed -i "s/_static/static/g" `grep "^\s*<script.*</script>$" -rl build/html`
+sed -i "s/_static/static/g" `grep "^\s*<link.*stylesheet.*>$" -rl build/html`
 
 mv build/html/_sources build/html/sources
-sed -i "s/_sources/sources/g" `grep "_sources" -rl build/html`
+sed -i "s/_sources/sources/g" `grep "\s*<a href=\".* View page source</a>" -rl build/html`
+sed -i "s/_sources/sources/g" `grep "\s*\$.ajax({url: DOCUMENTATION_OPTIONS.URL_ROOT})" -rl build/html`
+
+mv build/html/_images build/html/images
+sed -i "s/_images/images/g" `grep ".*image-reference\" href=\".*\.png.*" -rl build/html`
