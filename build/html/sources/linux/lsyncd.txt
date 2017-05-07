@@ -3,7 +3,5 @@
 ##################
 
 vi /etc/lsyncd.conf
--------------------
 
 lsyncd -log Exec /etc/lsyncd.conf
----------------------------------

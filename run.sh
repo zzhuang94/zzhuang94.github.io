@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# 由于 github pages 无法识别下划线开头的的文件夹
+# 需要转换文件夹名称
+
 rm -rf build
 
 make html

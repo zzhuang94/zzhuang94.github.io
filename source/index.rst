@@ -11,4 +11,5 @@ Contents:
 .. toctree::
    :maxdepth: 2
    
-   linux/lsyncd.rst
+   linux/index.rst
+   mysql/index.rst
