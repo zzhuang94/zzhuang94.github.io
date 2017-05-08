@@ -1,6 +1,8 @@
 个人博客搭建
 ============
 
++ 2017-05-08
+
 .. contents:: 目录
 
 简介
@@ -81,34 +83,11 @@ Sphinx对接GitHub Pages
 
     <script language='javascript'>document.location = 'build/html/index.html'</script>
 
-- 还有一个很坑的地方， **Github Pages** 找不到下划线开头的文件夹，
-  意味着，如果直接把当前的项目push到GitHub，页面将无法取到 ``_static`` 里面的静态文件而渲染失败，
-  这里需要修改目录名，并修改文件中的链接地址 *(坦率说，这不是一个好方法)*
+- 还有一个很坑的地方， **Github Pages** 找不到下划线开头的文件，
+  需要添加 ``.nojekyll`` 文件来屏蔽此限制
 
-- 提供一个 ``adapter.sh`` 脚本来完成上述目录名修改
+- 将整个项目push到 ``GitHub`` ，即完成了 ``Github Pages`` + ``Sphinx`` 搭建个人博客
 
-.. code-block:: sh
-   :linenos:
-
-    #!/bin/bash
-    
-    # 由于 github pages 无法识别下划线开头的的文件夹
-    # 需要转换文件夹名称
-    
-    rm -rf build
-    
-    make html
-    
-    mv build/html/_static build/html/static
-    sed -i "s/_static/static/g" `grep "^\s*<script.*</script>$" -rl build/html`
-    sed -i "s/_static/static/g" `grep "^\s*<link.*stylesheet.*>$" -rl build/html`
-    
-    mv build/html/_sources build/html/sources
-    sed -i "s/_sources/sources/g" `grep "\s*<a href=\".* View page source</a>" -rl build/html`
-    sed -i "s/_sources/sources/g" `grep "\s*\$.ajax({url: DOCUMENTATION_OPTIONS.URL_ROOT})" -rl build/html`
-    
-    mv build/html/_images build/html/images
-    sed -i "s/_images/images/g" `grep ".*image-reference\" href=\".*\.png.*" -rl build/html`
 
 参考文档
 --------
