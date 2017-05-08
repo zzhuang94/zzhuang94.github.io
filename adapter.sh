@@ -8,7 +8,8 @@ rm -rf build
 make html
 
 mv build/html/_static build/html/static
-sed -i "s/_static/static/g" `grep "^\s*<script.*</script>$" -rl build/html`
+reg="^\s*<script.*</script>$"
+sed -i "/${reg}/s/_static/static/g" `grep "${reg}" -rl build/html`
 sed -i "s/_static/static/g" `grep "^\s*<link.*stylesheet.*>$" -rl build/html`
 
 mv build/html/_sources build/html/sources
