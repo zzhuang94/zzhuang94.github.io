@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>时区 datetime timestamp &mdash; zzhuang94.blog just do it documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="zzhuang94.blog just do it documentation" href="../index.html"/>
+        <link rel="up" title="MySQL" href="index.html"/>
+        <link rel="next" title="技术文档" href="../tech/index.html"/>
+        <link rel="prev" title="MySQL" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> zzhuang94.blog
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                just do it
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux/index.html">Linux</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">MySQL</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">时区 datetime timestamp</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mysql">MySQL时区</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#datetime-vs-timestamp">datetime VS timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">参考文档</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">技术文档</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">zzhuang94.blog</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">MySQL</a> &raquo;</li>
+      
+    <li>时区 datetime timestamp</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/mysql/time.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="datetime-timestamp">
+<h1><a class="toc-backref" href="#id4">时区 datetime timestamp</a><a class="headerlink" href="#datetime-timestamp" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>2017-05-09</li>
+</ul>
+<div class="contents topic" id="id1">
+<p class="topic-title first">目录</p>
+<ul class="simple">
+<li><a class="reference internal" href="#datetime-timestamp" id="id4">时区 datetime timestamp</a><ul>
+<li><a class="reference internal" href="#mysql" id="id5">MySQL时区</a></li>
+<li><a class="reference internal" href="#datetime-vs-timestamp" id="id6">datetime VS timestamp</a></li>
+<li><a class="reference internal" href="#id2" id="id7">参考文档</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="mysql">
+<h2><a class="toc-backref" href="#id5">MySQL时区</a><a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">查看时区</p>
+<blockquote>
+<div><div class="highlight-sql"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="ss">&quot;%time_zone%&quot;</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------------+--------+</span>
+<span class="o">|</span> <span class="n">Variable_name</span>    <span class="o">|</span> <span class="n">Value</span>  <span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+--------+</span>
+<span class="o">|</span> <span class="n">system_time_zone</span> <span class="o">|</span> <span class="n">CST</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">time_zone</span>        <span class="o">|</span> <span class="k">SYSTEM</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+--------+</span>
+<span class="mi">2</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div></blockquote>
+<ul class="simple">
+<li><strong>system_time_zone</strong> 表示当前机器的时区 <cite>(CST: China Standard Time)</cite></li>
+<li><strong>time_zone</strong> 表示MySQL的时区 <cite>(SYSTEM: 使用系统时区，即CST)</cite></li>
+<li>有时会发现使用 <code class="docutils literal"><span class="pre">FROM_UNIXTIME</span></code> 转换时间戳，得到的结果和预期不一致，那么极有可能是时区不同导致</li>
+</ul>
+</li>
+<li><p class="first">修改时区</p>
+<ul>
+<li><p class="first">临时修改， <code class="docutils literal"><span class="pre">mysqld</span></code> 服务重启即失效</p>
+<div class="highlight-sql"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="c1">-- 设置当前会话，不影响其它会话</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">time_zone</span> <span class="o">=</span> <span class="s1">&#39;+8:00&#39;</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="c1">-- 可在程序中临时使用</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="c1">-- 如： mysql_query(&quot;SET time_zone = &#39;+8:00&#39;&quot;)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="c1">-- 设置当前会话及新创建的会话</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">set</span> <span class="k">global</span> <span class="n">time_zone</span> <span class="o">=</span> <span class="s1">&#39;+8:00&#39;</span><span class="p">;</span>
+</pre></div>
+</td></tr></table></div>
+</li>
+<li><p class="first">永久修改，需要修改 <code class="docutils literal"><span class="pre">my.cnf</span></code> 配置文件</p>
+<div class="highlight-sh"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># vim /etc/my.cnf</span>
+<span class="c"># [mysqld]中添加</span>
+default-time_zone <span class="o">=</span> <span class="s1">&#39;+8:00&#39;</span>
+<span class="c"># 重启MySQL服务，即永久生效</span>
+service mysqld restart
+</pre></div>
+</td></tr></table></div>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="datetime-vs-timestamp">
+<h2><a class="toc-backref" href="#id6">datetime VS timestamp</a><a class="headerlink" href="#datetime-vs-timestamp" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first"><strong>datetime</strong> 和 <strong>timestamp</strong> 都是用于存储时间字符串的类型</p>
+<ul class="simple">
+<li>范围<ul>
+<li><strong>datetime</strong> <cite>1000-01-01 00:00:00.000000 ~ 9999-12-31 23:59:59.999999</cite></li>
+<li><strong>timestamp</strong> <cite>1970-01-01 00:00:01.000000 ~ 2038-01-19 03:14:07.999999</cite></li>
+</ul>
+</li>
+<li>存储格式<ul>
+<li><strong>datetime</strong>  8字节，存储实际格式，与MySQL时区无关</li>
+<li><strong>timestamp</strong> 4字节，原始值根据时区自动转换成UTC存储，读取时再根据时区从UTC转换</li>
+</ul>
+</li>
+<li>自动更新<ul>
+<li><strong>datetime</strong>  需手动注明需要自动更新 <cite>(NOT NULL DEFAULT CURRENT_TIMESTAMP)</cite></li>
+<li><strong>timestamp</strong> 默认在所在 <code class="docutils literal"><span class="pre">row</span></code> 数据更改时，自动更新为当前时间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">效率问题</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="../_images/search-speed.png"><img alt="../_images/search-speed.png" src="../_images/search-speed.png" style="width: 610.2px; height: 126.0px;" /></a>
+</div></blockquote>
+<ul class="simple">
+<li>对于 <strong>MyISAM</strong> 引擎，采用 <strong>UNIX_TIMESTAMP(timestamp)</strong> 比较</li>
+<li>对于 <strong>InnoDB</strong> 引擎，建立索引，采用 <strong>int</strong> 或 <strong>datetime</strong> 直接比较时间字符串</li>
+</ul>
+</li>
+<li><p class="first">在以上两种类型之间，个人倾向于使用 <strong>datetime</strong> ，范围大，不受时区影响，
+如果需要考虑到效率问题，可以直接使用 <strong>int</strong></p>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id7">参考文档</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.piaoyi.org/database/MYSQL-INT-TIMESTAMP-DATETIME.html">飘易博客</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tech/index.html" class="btn btn-neutral float-right" title="技术文档" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="MySQL" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, zzhuang94.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'just do it',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
