@@ -1,26 +1,29 @@
 <?php
+// generate time axis
 
 $dev = 'file:///C:/Users/zzhuang94/my_dockers/centos/zzhuang94.github.io/build/html/';
 $pro = 'https://zzhuang94.github.io/build/html/';
 $link_prefix = (isset($argv[1]) && $argv[1]) == 'pro' ? $pro : $dev;
 
-# modify index.rst
+// modify index.rst
 exec("sed -i '\$d' source/index.rst");
 $time_axis_link = '.. _时间轴: ' . $link_prefix . 'time_axis.html';
 exec("echo '$time_axis_link' >> source/index.rst");
 
+// sort blogs and generate source/time_axis.rst
 $body_str = '';
 $foot_str = '';
-exec('find source -name "*.rst" ! -name "index.rst" ! -name "time_axis.rst"', $all_blog);
+exec('ls -t `find source -name "*.rst" ! -name "index.rst" ! -name "time_axis.rst"`', $all_blog);
 foreach ($all_blog as $b) {
     $title = getTitle($b);
     $body_str .= "- `$title`_\n";
     $link = getLink($b, $link_prefix);
     $foot_str .= ".. _$title: $link\n";
 }
-unlink('source/time_axis.rst');
-$time_axis = "时间轴\n======\n\n$body_str\n$foot_str";
-file_put_contents('source/time_axis.rst', $time_axis);
+exec("sed -i '4,\$d' source/time_axis.rst");
+exec("echo '" . $body_str . "\n" . $foot_str ."' >> source/time_axis.rst");
+
+exec('make html');
 
 function getLink($file, $link_prefix)
 {
@@ -46,5 +49,5 @@ function getTitle($file)
     exec("head -1 $index_file", $i_title);
     exec("head -1 $file", $title);
     $title = '【'. $i_title[0] . '】' . $title[0];
-    return "[$ctime]" . $title;
+    return "$ctime" . $title;
 }
