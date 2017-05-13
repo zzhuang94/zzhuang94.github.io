@@ -1,0 +1,136 @@
+============
+这是一级标题
+============
+
+起篇
+====
+
+下面是各级标题的使用:
+
+::
+
+    ===============
+    一级标题 
+    ===============
+
+
+    二级标题
+    =============
+
+
+    三级级标题
+    -------------
+
+    四级标题
+    .............
+
+    Section Title
+    ~~~~~~~~~~~~~
+
+    Section Title
+    *************
+
+    Section Title
+    +++++++++++++
+
+    Section Title
+    ^^^^^^^^^^^^^
+
+第一章
+======
+
+下面展示插入图片:
+
+.. image:: xyz.png
+
+下面是一张csv格式的图表：
+
+`header`: 表头行字段逗号分隔
+`width`: 没列占的宽度，逗号分隔
+
+.. csv-table:: Frozen Delights!
+   :header: "Treat", "Quantity", "Description"
+   :widths: 15, 10, 30
+
+   "Albatross", 2.99, "On a stick!"
+   "Crunchy Frog", 1.49, "If we took the bones out, it wouldn't be
+   crunchy, now would it?"
+   "Gannet Ripple", 1.99, "On a stick!"
+
+下面是List样式的表格:
+
+.. list-table:: Frozen Delights!
+   :widths: 15 10 30
+   :header-rows: 1
+
+   * - Treat
+     - Quantity
+     - Description
+   * - Albatross
+     - 2.99
+     - On a stick!
+   * - Crunchy Frog
+     - 1.49
+     - If we took the bones out, it wouldn't be
+       crunchy, now would it?
+   * - Gannet Ripple
+     - 1.99
+     - On a stick!
+
+.. attention::
+ 这是一个主意信息的内容
+
+.. hint:: 
+ 这是一个提醒信息的内容
+
+.. note::
+ 这是一个注解信息的内容
+
+
+第二章
+======
+
+代码展示
+--------
+
+
+下面是一段python 代码：
+
+.. code:: python
+
+  def foo():
+      "just for testing"
+      pass
+外部链接
+--------
+这里展示外部链接的使用:本文使用 `Sphinx`_ 工具，以 `reStructuredText`_ 格式来书写文档。
+
+
+注脚
+----
+下面是注脚:
+
+[2]_ will be "2" (manually numbered),
+[#]_ will be "3" (anonymous auto-numbered), and
+[#label]_ will be "1" (labeled auto-numbered).
+
+数学公式
+---------
+
+.. math::
+
+  α_t(i) = P(O_1, O_2, … O_t, q_t = S_i λ)
+
+
+.. [2] This footnote is labeled manually, so its number is fixed.
+
+.. [#label] This autonumber-labeled footnote will be labeled "1".
+   It is the first auto-numbered footnote and no other footnote
+   with label "1" exists.  The order of the footnotes is used to
+   determine numbering, not the order of the footnote references.
+
+.. [#] This footnote will be labeled "3".  It is the second
+   auto-numbered footnote, but footnote label "2" is already used.
+
+.. _Sphinx: http://sphinx-doc.org/
+.. _reStructuredText: http://docutils.sourceforge.net/docs/ref/rst/introduction.html

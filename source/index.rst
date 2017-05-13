@@ -15,3 +15,7 @@ zzhuang94.blog
    linux/index.rst
    mysql/index.rst
    tech/index.rst
+
+`时间轴`_
+'''''''''
+.. _时间轴: https://zzhuang94.github.io/build/html/time_axis.html
