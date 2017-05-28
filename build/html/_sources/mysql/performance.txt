@@ -111,7 +111,7 @@
   - 都是以二进制文件的方式存储数据，但是不同的引擎数据存储方式不同
 
     - **Innodb** : ``.frm`` 存储表结构， ``.ibd`` 存储表数据 *（包括索引信息）*
-    - **MyISAM** : ``.frm`` 存储表结构， ``.MYD`` 存储表数据， ``.MYI`` 存储索引信息 *（可以看到，time3和time4的MYD文件大小一样，而MYI文件time4确大了很多，是应为time3只有主键索引，而time4还有三个其它字段的索引）*
+    - **MyISAM** : ``.frm`` 存储表结构， ``.MYD`` 存储表数据， ``.MYI`` 存储索引信息 *（可以看到，time3和time4的MYD文件大小一样，而MYI文件time4确大了很多，是因为time3只有主键索引，而time4还有三个其它字段的索引）*
 
   .. code-block:: shell
      :linenos:
@@ -140,7 +140,7 @@
   - **时间先后** 比较的场景，使用 **时间戳** 的效率要略高于 **datetime** ，且这两种类型的效率要远远高于 **timestamp**
 
 .. csv-table::
-   :header: "SELECT COUNT(*) FROM {} WHERE", "time1", "time2", "time3", "time4"
+   :header: "SELECT COUNT(*) FROM ${table} WHERE", "time1", "time2", "time3", "time4"
     
    "1", "3.78 sec", "3.20 sec", "0.00 sec", "0.00 sec"
    "`dt` > '2017-06-20' AND `dt` < '2017-08-20'", "5.45 sec", "4.60 sec", "5.37 sec", "3.68 sec"
@@ -148,10 +148,51 @@
    "`num` > 1497888000 AND `num` < 1503158400", "4.22 sec", "2.54 sec", "2.30 sec", "2.50 sec"
 
 .. csv-table::
-   :header: "SELECT MAX(num) FROM {} WHERE", "time1", "time2", "time3", "time4"
+   :header: "SELECT MAX(num) FROM ${table} WHERE", "time1", "time2", "time3", "time4"
     
    "1", "5.07 sec", "0.07 sec", "2.29 sec", "0.09 sec"
    "`dt` > '2017-06-20' AND `dt` < '2017-08-20'", "6.25 sec", "7.30 sec", "3.51 sec", "3.83 sec"
    "`ts` > '2017-06-20' AND `ts` < '2017-08-20'", "18.97 sec", "26.22 sec", "16.98 sec", "18.48 sec"
    "`num` > 1497888000 AND `num` < 1503158400", "4.77 sec", "0.00 sec", "2.78 sec", "0.00 sec"
 
+关于索引
+--------
+
+- 关于上面的测试数据，应该会发现一个明显的问题： **在同样的数据库引擎及同样的查询之下，使用索引并不是总是比不用索引快**
+
+- 但是经过测试会发现：
+
+  - *数据量小，使用索引明显效率提升*
+  - *数据量大，看不出来使用索引与否与查询效率的关联*
+
+- 大胆猜测： **如果查询数据量过大，MySQL则不走索引，直接全表查询**
+  
+- 借助 `EXPLAIN`_ 查看索引使用情况，印证上述猜测
+
+  .. code-block:: sql
+     :linenos:
+
+      mysql> explain select * from time2 where dt > '2017-07-01';
+      +----+-------------+-------+------+---------------+------+---------+------+---------+-------------+
+      | id | select_type | table | type | possible_keys | key  | key_len | ref  | rows    | Extra       |
+      +----+-------------+-------+------+---------------+------+---------+------+---------+-------------+
+      |  1 | SIMPLE      | time2 | ALL  | dt            | NULL | NULL    | NULL | 9385444 | Using where |
+      +----+-------------+-------+------+---------------+------+---------+------+---------+-------------+
+      1 row in set (0.00 sec)
+      
+      mysql> explain select * from time2 where dt = '2017-07-01';
+      +----+-------------+-------+------+---------------+------+---------+-------+------+-------+
+      | id | select_type | table | type | possible_keys | key  | key_len | ref   | rows | Extra |
+      +----+-------------+-------+------+---------------+------+---------+-------+------+-------+
+      |  1 | SIMPLE      | time2 | ref  | dt            | dt   | 6       | const |    1 | NULL  |
+      +----+-------------+-------+------+---------------+------+---------+-------+------+-------+
+      1 row in set (0.00 sec)
+
+
+- MySQL官方文档， `B-Tree Index Characteristics`_ 有下面这段话 :)
+
+ .. image:: asset/btree-index.png
+    :scale: 90%
+
+.. _EXPLAIN: https://dev.mysql.com/doc/refman/5.6/en/explain-output.html
+.. _B-Tree Index Characteristics: https://dev.mysql.com/doc/refman/5.6/en/index-btree-hash.html#btree-index-characteristics

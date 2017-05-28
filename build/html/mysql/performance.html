@@ -103,6 +103,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id4">初始化</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id5">存储结构</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id6">查询效率</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">关于索引</a></li>
 </ul>
 </li>
 </ul>
@@ -165,24 +166,25 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1><a class="toc-backref" href="#id7">关于性能</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id8">关于性能</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li>2017-05-13</li>
 </ul>
 <div class="contents topic" id="id2">
 <p class="topic-title first">目录</p>
 <ul class="simple">
-<li><a class="reference internal" href="#id1" id="id7">关于性能</a><ul>
-<li><a class="reference internal" href="#id3" id="id8">建表</a></li>
-<li><a class="reference internal" href="#id4" id="id9">初始化</a></li>
-<li><a class="reference internal" href="#id5" id="id10">存储结构</a></li>
-<li><a class="reference internal" href="#id6" id="id11">查询效率</a></li>
+<li><a class="reference internal" href="#id1" id="id8">关于性能</a><ul>
+<li><a class="reference internal" href="#id3" id="id9">建表</a></li>
+<li><a class="reference internal" href="#id4" id="id10">初始化</a></li>
+<li><a class="reference internal" href="#id5" id="id11">存储结构</a></li>
+<li><a class="reference internal" href="#id6" id="id12">查询效率</a></li>
+<li><a class="reference internal" href="#id7" id="id13">关于索引</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="id3">
-<h2><a class="toc-backref" href="#id8">建表</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9">建表</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">四张不同引擎，不同索引的表</p>
 <div class="highlight-sql"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -280,7 +282,7 @@
 </ul>
 </div>
 <div class="section" id="id4">
-<h2><a class="toc-backref" href="#id9">初始化</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10">初始化</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">导入测试数据，这里使用 <code class="docutils literal"><span class="pre">php</span></code> 脚本来向四张表中导入相同的1000万条相同的数据</p>
 <div class="highlight-php"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -344,7 +346,7 @@
 </ul>
 </div>
 <div class="section" id="id5">
-<h2><a class="toc-backref" href="#id10">存储结构</a><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11">存储结构</a><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">各表在磁盘上的真实存储，可以看到：</p>
 <ul class="simple">
@@ -352,7 +354,7 @@
 <li>相同的索引，MyISAM引擎占空间更小 <em>(time3:481M&lt;time1:576M;  time4:819M&lt;time2:1016M)</em></li>
 <li>都是以二进制文件的方式存储数据，但是不同的引擎数据存储方式不同<ul>
 <li><strong>Innodb</strong> : <code class="docutils literal"><span class="pre">.frm</span></code> 存储表结构， <code class="docutils literal"><span class="pre">.ibd</span></code> 存储表数据 <em>（包括索引信息）</em></li>
-<li><strong>MyISAM</strong> : <code class="docutils literal"><span class="pre">.frm</span></code> 存储表结构， <code class="docutils literal"><span class="pre">.MYD</span></code> 存储表数据， <code class="docutils literal"><span class="pre">.MYI</span></code> 存储索引信息 <em>（可以看到，time3和time4的MYD文件大小一样，而MYI文件time4确大了很多，是应为time3只有主键索引，而time4还有三个其它字段的索引）</em></li>
+<li><strong>MyISAM</strong> : <code class="docutils literal"><span class="pre">.frm</span></code> 存储表结构， <code class="docutils literal"><span class="pre">.MYD</span></code> 存储表数据， <code class="docutils literal"><span class="pre">.MYI</span></code> 存储索引信息 <em>（可以看到，time3和time4的MYD文件大小一样，而MYI文件time4确大了很多，是因为time3只有主键索引，而time4还有三个其它字段的索引）</em></li>
 </ul>
 </li>
 </ul>
@@ -387,7 +389,7 @@
 </ul>
 </div>
 <div class="section" id="id6">
-<h2><a class="toc-backref" href="#id11">查询效率</a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12">查询效率</a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>分别对四张表进行同样的查询操作，得到以下结论：<ul>
 <li><strong>MyISAM</strong> 引擎会记录全表总记录数，不加条件查找 <strong>COUNT(*)</strong> 可以秒出结果，有条件限制也需要计算</li>
@@ -405,7 +407,7 @@
 <col width="20%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">SELECT COUNT(*) FROM {} WHERE</th>
+<tr class="row-odd"><th class="head">SELECT COUNT(*) FROM ${table} WHERE</th>
 <th class="head">time1</th>
 <th class="head">time2</th>
 <th class="head">time3</th>
@@ -448,7 +450,7 @@
 <col width="20%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">SELECT MAX(num) FROM {} WHERE</th>
+<tr class="row-odd"><th class="head">SELECT MAX(num) FROM ${table} WHERE</th>
 <th class="head">time1</th>
 <th class="head">time2</th>
 <th class="head">time3</th>
@@ -482,6 +484,59 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section" id="id7">
+<h2><a class="toc-backref" href="#id13">关于索引</a><a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">关于上面的测试数据，应该会发现一个明显的问题： <strong>在同样的数据库引擎及同样的查询之下，使用索引并不是总是比不用索引快</strong></p>
+</li>
+<li><p class="first">但是经过测试会发现：</p>
+<ul class="simple">
+<li><em>数据量小，使用索引明显效率提升</em></li>
+<li><em>数据量大，看不出来使用索引与否与查询效率的关联</em></li>
+</ul>
+</li>
+<li><p class="first">大胆猜测： <strong>如果查询数据量过大，MySQL则不走索引，直接全表查询</strong></p>
+</li>
+<li><p class="first">借助 <a class="reference external" href="https://dev.mysql.com/doc/refman/5.6/en/explain-output.html">EXPLAIN</a> 查看索引使用情况，印证上述猜测</p>
+<div class="highlight-sql"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre> <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">explain</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">time2</span> <span class="k">where</span> <span class="n">dt</span> <span class="o">&gt;</span> <span class="s1">&#39;2017-07-01&#39;</span><span class="p">;</span>
+ <span class="o">+</span><span class="c1">----+-------------+-------+------+---------------+------+---------+------+---------+-------------+</span>
+ <span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">select_type</span> <span class="o">|</span> <span class="k">table</span> <span class="o">|</span> <span class="k">type</span> <span class="o">|</span> <span class="n">possible_keys</span> <span class="o">|</span> <span class="k">key</span>  <span class="o">|</span> <span class="n">key_len</span> <span class="o">|</span> <span class="k">ref</span>  <span class="o">|</span> <span class="k">rows</span>    <span class="o">|</span> <span class="n">Extra</span>       <span class="o">|</span>
+ <span class="o">+</span><span class="c1">----+-------------+-------+------+---------------+------+---------+------+---------+-------------+</span>
+ <span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span> <span class="k">SIMPLE</span>      <span class="o">|</span> <span class="n">time2</span> <span class="o">|</span> <span class="k">ALL</span>  <span class="o">|</span> <span class="n">dt</span>            <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="k">NULL</span>    <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="mi">9385444</span> <span class="o">|</span> <span class="k">Using</span> <span class="k">where</span> <span class="o">|</span>
+ <span class="o">+</span><span class="c1">----+-------------+-------+------+---------------+------+---------+------+---------+-------------+</span>
+ <span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+
+ <span class="n">mysql</span><span class="o">&gt;</span> <span class="k">explain</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">time2</span> <span class="k">where</span> <span class="n">dt</span> <span class="o">=</span> <span class="s1">&#39;2017-07-01&#39;</span><span class="p">;</span>
+ <span class="o">+</span><span class="c1">----+-------------+-------+------+---------------+------+---------+-------+------+-------+</span>
+ <span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">select_type</span> <span class="o">|</span> <span class="k">table</span> <span class="o">|</span> <span class="k">type</span> <span class="o">|</span> <span class="n">possible_keys</span> <span class="o">|</span> <span class="k">key</span>  <span class="o">|</span> <span class="n">key_len</span> <span class="o">|</span> <span class="k">ref</span>   <span class="o">|</span> <span class="k">rows</span> <span class="o">|</span> <span class="n">Extra</span> <span class="o">|</span>
+ <span class="o">+</span><span class="c1">----+-------------+-------+------+---------------+------+---------+-------+------+-------+</span>
+ <span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span> <span class="k">SIMPLE</span>      <span class="o">|</span> <span class="n">time2</span> <span class="o">|</span> <span class="k">ref</span>  <span class="o">|</span> <span class="n">dt</span>            <span class="o">|</span> <span class="n">dt</span>   <span class="o">|</span> <span class="mi">6</span>       <span class="o">|</span> <span class="n">const</span> <span class="o">|</span>    <span class="mi">1</span> <span class="o">|</span> <span class="k">NULL</span>  <span class="o">|</span>
+ <span class="o">+</span><span class="c1">----+-------------+-------+------+---------------+------+---------+-------+------+-------+</span>
+ <span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</li>
+<li><p class="first">MySQL官方文档， <a class="reference external" href="https://dev.mysql.com/doc/refman/5.6/en/index-btree-hash.html#btree-index-characteristics">B-Tree Index Characteristics</a> 有下面这段话 :)</p>
+</li>
+</ul>
+<blockquote>
+<div><a class="reference internal image-reference" href="../_images/btree-index.png"><img alt="../_images/btree-index.png" src="../_images/btree-index.png" style="width: 794.7px; height: 154.8px;" /></a>
+</div></blockquote>
 </div>
 </div>
 
