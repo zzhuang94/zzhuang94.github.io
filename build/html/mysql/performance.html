@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>性能测试 &mdash; zzhuang94.blog just do it documentation</title>
+  <title>关于性能 &mdash; zzhuang94.blog just do it documentation</title>
   
 
   
@@ -84,6 +84,10 @@
             
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../linux/index.html">Linux</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../linux/memo.html">备忘录</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../linux/memo.html#id3">时间戳与时间字符串</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../linux/lsyncd.html">使用lsyncd同步文件</a></li>
 </ul>
 </li>
@@ -94,8 +98,11 @@
 <li class="toctree-l3"><a class="reference internal" href="time.html#id2">参考文档</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">性能测试</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="">关于性能</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id3">建表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">初始化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">存储结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">查询效率</a></li>
 </ul>
 </li>
 </ul>
@@ -143,7 +150,7 @@
       
           <li><a href="index.html">MySQL</a> &raquo;</li>
       
-    <li>性能测试</li>
+    <li>关于性能</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -158,21 +165,24 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1><a class="toc-backref" href="#id4">性能测试</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id7">关于性能</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li>2017-05-13</li>
 </ul>
 <div class="contents topic" id="id2">
 <p class="topic-title first">目录</p>
 <ul class="simple">
-<li><a class="reference internal" href="#id1" id="id4">性能测试</a><ul>
-<li><a class="reference internal" href="#id3" id="id5">建表</a></li>
+<li><a class="reference internal" href="#id1" id="id7">关于性能</a><ul>
+<li><a class="reference internal" href="#id3" id="id8">建表</a></li>
+<li><a class="reference internal" href="#id4" id="id9">初始化</a></li>
+<li><a class="reference internal" href="#id5" id="id10">存储结构</a></li>
+<li><a class="reference internal" href="#id6" id="id11">查询效率</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="id3">
-<h2><a class="toc-backref" href="#id5">建表</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8">建表</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">四张不同引擎，不同索引的表</p>
 <div class="highlight-sql"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -267,9 +277,211 @@
 </pre></div>
 </td></tr></table></div>
 </li>
-<li><p class="first">待续。。</p>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id9">初始化</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">导入测试数据，这里使用 <code class="docutils literal"><span class="pre">php</span></code> 脚本来向四张表中导入相同的1000万条相同的数据</p>
+<div class="highlight-php"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span class="x"> </span><span class="cp">&lt;?php</span>
+
+ <span class="nb">date_default_timezone_set</span><span class="p">(</span><span class="s1">&#39;Asia/Shanghai&#39;</span><span class="p">);</span>
+ <span class="nv">$table</span> <span class="o">=</span> <span class="nv">$argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+ <span class="nv">$pdo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PDO</span><span class="p">(</span><span class="s1">&#39;mysql:host=localhost;dbname=zzhuang94&#39;</span><span class="p">,</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+ <span class="nv">$unix</span> <span class="o">=</span> <span class="nb">time</span><span class="p">();</span>
+ <span class="k">for</span> <span class="p">(</span><span class="nv">$j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$j</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nv">$j</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO </span><span class="si">$table</span><span class="s2"> (num, str, dt, ts) values &quot;</span><span class="p">;</span>
+     <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nv">$unix</span> <span class="o">++</span><span class="p">;</span>
+         <span class="nv">$time</span> <span class="o">=</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">,</span> <span class="nv">$unix</span><span class="p">);</span>
+         <span class="nv">$sql</span> <span class="o">.=</span> <span class="s2">&quot;(</span><span class="si">$unix</span><span class="s2">, &#39;zzhuang</span><span class="si">$unix</span><span class="s2">&#39;, &#39;</span><span class="si">$time</span><span class="s2">&#39;, &#39;</span><span class="si">$time</span><span class="s2">&#39;),&quot;</span><span class="p">;</span>
+     <span class="p">}</span>
+     <span class="nv">$sql</span> <span class="o">=</span> <span class="nb">rtrim</span><span class="p">(</span><span class="nv">$sql</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">);</span>
+     <span class="nv">$pdo</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+ <span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</li>
+<li><p class="first">执行数据导入，可以看到：</p>
+<ul class="simple">
+<li>对于不同引擎使用不同索引的表，插入完全相同的数据，真实执行时间 <em>(19.85s, 20.28s, 19.01s, 19.69s)</em> 相差无几</li>
+</ul>
+<div class="highlight-shell"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre> <span class="o">[</span>12:33:49<span class="o">]</span> ~/code/php on git:master x <span class="nv">$ </span><span class="nb">time </span>php mysql.php time1
+ php mysql.php time1  19.85s user 0.79s system 14% cpu 2:23.38 total
+ <span class="o">[</span>12:20:37<span class="o">]</span> ~/code/php on git:master x <span class="nv">$ </span><span class="nb">time </span>php mysql.php time2
+ php mysql.php time2  20.28s user 0.76s system 11% cpu 3:11.14 total
+ <span class="o">[</span>12:24:07<span class="o">]</span> ~/code/php on git:master x <span class="nv">$ </span><span class="nb">time </span>php mysql.php time3
+ php mysql.php time3  19.01s user 0.73s system 20% cpu 1:37.04 total
+ <span class="o">[</span>12:26:26<span class="o">]</span> ~/code/php on git:master x <span class="nv">$ </span><span class="nb">time </span>php mysql.php time4
+ php mysql.php time4  19.69s user 0.76s system 6% cpu 5:34.05 total
+</pre></div>
+</td></tr></table></div>
 </li>
 </ul>
+</div>
+<div class="section" id="id5">
+<h2><a class="toc-backref" href="#id10">存储结构</a><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">各表在磁盘上的真实存储，可以看到：</p>
+<ul class="simple">
+<li>相同的引擎，不使用索引占空间更小 <em>(time1:576M&lt;time2:1016M;  time3:481M&lt;time4:819M)</em></li>
+<li>相同的索引，MyISAM引擎占空间更小 <em>(time3:481M&lt;time1:576M;  time4:819M&lt;time2:1016M)</em></li>
+<li>都是以二进制文件的方式存储数据，但是不同的引擎数据存储方式不同<ul>
+<li><strong>Innodb</strong> : <code class="docutils literal"><span class="pre">.frm</span></code> 存储表结构， <code class="docutils literal"><span class="pre">.ibd</span></code> 存储表数据 <em>（包括索引信息）</em></li>
+<li><strong>MyISAM</strong> : <code class="docutils literal"><span class="pre">.frm</span></code> 存储表结构， <code class="docutils literal"><span class="pre">.MYD</span></code> 存储表数据， <code class="docutils literal"><span class="pre">.MYI</span></code> 存储索引信息 <em>（可以看到，time3和time4的MYD文件大小一样，而MYI文件time4确大了很多，是应为time3只有主键索引，而time4还有三个其它字段的索引）</em></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-shell"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre> <span class="o">[</span>12:32:07<span class="o">]</span> /var/lib/mysql/zzhuang94 <span class="nv">$ </span>l
+ total 2.9G
+ -rw-rw---- <span class="m">1</span> mysql mysql    <span class="m">65</span> May <span class="m">10</span> 23:12 db.opt
+ -rw-rw---- <span class="m">1</span> mysql mysql  8.5K May <span class="m">10</span> 23:13 time1.frm
+ -rw-rw---- <span class="m">1</span> mysql mysql  576M May <span class="m">20</span> 12:36 time1.ibd
+ -rw-rw---- <span class="m">1</span> mysql mysql  8.5K May <span class="m">10</span> 23:13 time2.frm
+ -rw-rw---- <span class="m">1</span> mysql mysql 1016M May <span class="m">20</span> 12:24 time2.ibd
+ -rw-rw---- <span class="m">1</span> mysql mysql  8.5K May <span class="m">10</span> 23:13 time3.frm
+ -rw-rw---- <span class="m">1</span> mysql mysql  382M May <span class="m">20</span> 12:26 time3.MYD
+ -rw-rw---- <span class="m">1</span> mysql mysql   99M May <span class="m">20</span> 12:26 time3.MYI
+ -rw-rw---- <span class="m">1</span> mysql mysql  8.5K May <span class="m">10</span> 23:13 time4.frm
+ -rw-rw---- <span class="m">1</span> mysql mysql  382M May <span class="m">20</span> 12:32 time4.MYD
+ -rw-rw---- <span class="m">1</span> mysql mysql  437M May <span class="m">20</span> 12:32 time4.MYI
+</pre></div>
+</td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2><a class="toc-backref" href="#id11">查询效率</a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>分别对四张表进行同样的查询操作，得到以下结论：<ul>
+<li><strong>MyISAM</strong> 引擎会记录全表总记录数，不加条件查找 <strong>COUNT(*)</strong> 可以秒出结果，有条件限制也需要计算</li>
+<li>相同的索引情况， <strong>MyISAM</strong> 的查询效率要高于 <strong>InnoDB</strong></li>
+<li><strong>时间先后</strong> 比较的场景，使用 <strong>时间戳</strong> 的效率要略高于 <strong>datetime</strong> ，且这两种类型的效率要远远高于 <strong>timestamp</strong></li>
+</ul>
+</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SELECT COUNT(*) FROM {} WHERE</th>
+<th class="head">time1</th>
+<th class="head">time2</th>
+<th class="head">time3</th>
+<th class="head">time4</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>3.78 sec</td>
+<td>3.20 sec</td>
+<td>0.00 sec</td>
+<td>0.00 sec</td>
+</tr>
+<tr class="row-odd"><td><cite>dt</cite> &gt; &#8216;2017-06-20&#8217; AND <cite>dt</cite> &lt; &#8216;2017-08-20&#8217;</td>
+<td>5.45 sec</td>
+<td>4.60 sec</td>
+<td>5.37 sec</td>
+<td>3.68 sec</td>
+</tr>
+<tr class="row-even"><td><cite>ts</cite> &gt; &#8216;2017-06-20&#8217; AND <cite>ts</cite> &lt; &#8216;2017-08-20&#8217;</td>
+<td>18.30 sec</td>
+<td>12.29 sec</td>
+<td>17.76 sec</td>
+<td>12.45 sec</td>
+</tr>
+<tr class="row-odd"><td><cite>num</cite> &gt; 1497888000 AND <cite>num</cite> &lt; 1503158400</td>
+<td>4.22 sec</td>
+<td>2.54 sec</td>
+<td>2.30 sec</td>
+<td>2.50 sec</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SELECT MAX(num) FROM {} WHERE</th>
+<th class="head">time1</th>
+<th class="head">time2</th>
+<th class="head">time3</th>
+<th class="head">time4</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>5.07 sec</td>
+<td>0.07 sec</td>
+<td>2.29 sec</td>
+<td>0.09 sec</td>
+</tr>
+<tr class="row-odd"><td><cite>dt</cite> &gt; &#8216;2017-06-20&#8217; AND <cite>dt</cite> &lt; &#8216;2017-08-20&#8217;</td>
+<td>6.25 sec</td>
+<td>7.30 sec</td>
+<td>3.51 sec</td>
+<td>3.83 sec</td>
+</tr>
+<tr class="row-even"><td><cite>ts</cite> &gt; &#8216;2017-06-20&#8217; AND <cite>ts</cite> &lt; &#8216;2017-08-20&#8217;</td>
+<td>18.97 sec</td>
+<td>26.22 sec</td>
+<td>16.98 sec</td>
+<td>18.48 sec</td>
+</tr>
+<tr class="row-odd"><td><cite>num</cite> &gt; 1497888000 AND <cite>num</cite> &lt; 1503158400</td>
+<td>4.77 sec</td>
+<td>0.00 sec</td>
+<td>2.78 sec</td>
+<td>0.00 sec</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 

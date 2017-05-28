@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Linux &mdash; zzhuang94.blog just do it documentation</title>
+  <title>备忘录 &mdash; zzhuang94.blog just do it documentation</title>
   
 
   
@@ -31,8 +31,9 @@
 
   
     <link rel="top" title="zzhuang94.blog just do it documentation" href="../index.html"/>
-        <link rel="next" title="备忘录" href="memo.html"/>
-        <link rel="prev" title="zzhuang94.blog" href="../index.html"/> 
+        <link rel="up" title="Linux" href="index.html"/>
+        <link rel="next" title="使用lsyncd同步文件" href="lsyncd.html"/>
+        <link rel="prev" title="Linux" href="index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -82,9 +83,9 @@
             
             
                 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">Linux</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="memo.html">备忘录</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="memo.html#id3">时间戳与时间字符串</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Linux</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">备忘录</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">时间戳与时间字符串</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="lsyncd.html">使用lsyncd同步文件</a></li>
@@ -147,11 +148,13 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>Linux</li>
+          <li><a href="index.html">Linux</a> &raquo;</li>
+      
+    <li>备忘录</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/linux/index.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/linux/memo.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -161,15 +164,68 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="linux">
-<h1>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="memo.html">备忘录</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="memo.html#id3">时间戳与时间字符串</a></li>
+  <div class="section" id="id1">
+<h1><a class="toc-backref" href="#id4">备忘录</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>2017-05-20</li>
+</ul>
+<div class="contents topic" id="id2">
+<p class="topic-title first">目录</p>
+<ul class="simple">
+<li><a class="reference internal" href="#id1" id="id4">备忘录</a><ul>
+<li><a class="reference internal" href="#id3" id="id5">时间戳与时间字符串</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="lsyncd.html">使用lsyncd同步文件</a></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id5">时间戳与时间字符串</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">获取当前时间戳</p>
+<div class="highlight-shell"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre> <span class="o">[</span>13:32:27<span class="o">]</span> ~ <span class="nv">$ </span>date +%s
+ 1495258357
+</pre></div>
+</td></tr></table></div>
+</li>
+<li><p class="first">时间戳转字符串</p>
+<div class="highlight-shell"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre> <span class="o">[</span>13:32:37<span class="o">]</span> ~ <span class="nv">$ </span>date -d @1495258357
+ Sat May <span class="m">20</span> 13:32:37 CST 2017
+ <span class="o">[</span>13:44:46<span class="o">]</span> ~ <span class="nv">$ </span>date -d <span class="s2">&quot;1970-01-01 UTC 1495228800 seconds&quot;</span> <span class="s2">&quot;+%F %T&quot;</span>
+ 2017-05-20 05:20:00
+ <span class="o">[</span>13:44:55<span class="o">]</span> ~ <span class="nv">$ </span>date -d <span class="s2">&quot;1970-01-01 CST 1495228800 seconds&quot;</span> <span class="s2">&quot;+%F %T&quot;</span>
+ 2017-05-19 21:20:00
+ <span class="o">[</span>13:45:01<span class="o">]</span> ~ <span class="nv">$ </span>date -d <span class="s2">&quot;1970-01-01 CST 1495228800 seconds&quot;</span> <span class="s2">&quot;+%F&quot;</span>
+ 2017-05-19
+ <span class="o">[</span>13:45:06<span class="o">]</span> ~ <span class="nv">$ </span>date -d <span class="s2">&quot;1970-01-01 CST 1495228800 seconds&quot;</span> <span class="s2">&quot;+%T&quot;</span>
+ 21:20:00
+</pre></div>
+</td></tr></table></div>
+</li>
+<li><p class="first">时间字符串转时间戳</p>
+<div class="highlight-shell"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre> <span class="o">[</span>13:38:05<span class="o">]</span> ~ <span class="nv">$ </span>date +%s -d<span class="s1">&#39;2017-05-20 05:20:00&#39;</span>
+ 1495228800
+ <span class="o">[</span>13:40:17<span class="o">]</span> ~ <span class="nv">$ </span>date +%s -d <span class="s1">&#39;2017-05-20 05:20:00 CST&#39;</span>
+ 1495228800
+ <span class="o">[</span>13:40:21<span class="o">]</span> ~ <span class="nv">$ </span>date +%s -d <span class="s1">&#39;2017-05-20 05:20:00 UTC&#39;</span>
+ 1495257600
+</pre></div>
+</td></tr></table></div>
+</li>
 </ul>
 </div>
 </div>
@@ -181,10 +237,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="memo.html" class="btn btn-neutral float-right" title="备忘录" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="lsyncd.html" class="btn btn-neutral float-right" title="使用lsyncd同步文件" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="zzhuang94.blog" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Linux" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
