@@ -18,4 +18,4 @@ zzhuang94.blog
    mysql/index.rst
    tech/index.rst
 
-.. _时间轴: https://zzhuang94.github.io/build/html/time_axis.html
+.. _时间轴: http://www.zzhuang94.com/build/html/time_axis.html

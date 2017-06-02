@@ -2,7 +2,7 @@
 // generate time axis
 
 $dev = 'file:///C:/Users/zzhuang94/my_dockers/centos/zzhuang94.github.io/build/html/';
-$pro = 'https://zzhuang94.github.io/build/html/';
+$pro = 'http://www.zzhuang94.com/build/html/';
 $link_prefix = (isset($argv[1]) && $argv[1]) == 'pro' ? $pro : $dev;
 
 // modify index.rst
