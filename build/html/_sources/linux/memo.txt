@@ -54,3 +54,13 @@ ARGS 参数传递
      :linenos:
 
       [10:55:18] ~/files $ ls *.json | xargs -I% cp "%" "%".bak
+
+GIT
+---
+
+- 本地分支推送到远端
+
+  .. code-block:: shell
+     :linenos:
+
+      [11:14:14] ~/docs on git:master x $ git push origin my-branch
