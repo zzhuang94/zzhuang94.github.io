@@ -45,3 +45,12 @@
       [13:40:21] ~ $ date +%s -d '2017-05-20 05:20:00 UTC'
       1495257600
 
+ARGS 参数传递
+-------------
+
+- xargs 多参数传递
+
+  .. code-block:: shell
+     :linenos:
+
+      [10:55:18] ~/files $ ls *.json | xargs -I% cp "%" "%".bak

@@ -86,6 +86,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Linux</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="">备忘录</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id3">时间戳与时间字符串</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#args">ARGS 参数传递</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="lsyncd.html">使用lsyncd同步文件</a></li>
@@ -98,11 +99,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../mysql/time.html#id2">参考文档</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../mysql/performance.html">性能测试</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mysql/performance.html">关于性能</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../mysql/performance.html#id3">建表</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../mysql/performance.html#id4">初始化</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../mysql/performance.html#id5">存储结构</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../mysql/performance.html#id6">查询效率</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mysql/performance.html#id7">关于索引</a></li>
 </ul>
 </li>
 </ul>
@@ -174,6 +176,7 @@
 <ul class="simple">
 <li><a class="reference internal" href="#id1" id="id4">备忘录</a><ul>
 <li><a class="reference internal" href="#id3" id="id5">时间戳与时间字符串</a></li>
+<li><a class="reference internal" href="#args" id="id6">ARGS 参数传递</a></li>
 </ul>
 </li>
 </ul>
@@ -223,6 +226,16 @@
  1495228800
  <span class="o">[</span>13:40:21<span class="o">]</span> ~ <span class="nv">$ </span>date +%s -d <span class="s1">&#39;2017-05-20 05:20:00 UTC&#39;</span>
  1495257600
+</pre></div>
+</td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="section" id="args">
+<h2><a class="toc-backref" href="#id6">ARGS 参数传递</a><a class="headerlink" href="#args" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">xargs 多参数传递</p>
+<div class="highlight-shell"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre> <span class="o">[</span>10:55:18<span class="o">]</span> ~/files <span class="nv">$ </span>ls *.json <span class="p">|</span> xargs -I% cp <span class="s2">&quot;%&quot;</span> <span class="s2">&quot;%&quot;</span>.bak
 </pre></div>
 </td></tr></table></div>
 </li>
