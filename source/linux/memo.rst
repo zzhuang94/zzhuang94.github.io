@@ -64,3 +64,85 @@ GIT
      :linenos:
 
       [11:14:14] ~/docs on git:master x $ git push origin my-branch
+
+jq
+--
+
+- JSON格式化
+
+  .. code-block:: shell
+     :linenos:
+
+      [19:33:13] ~/code/shell/jq on git:master x $ cat json.json                                          
+      {"hzz":{"kobe":[33,8,10,24],"james":[["23","6","23"]]},"src":[{"zzhuang94":100,"kobe.bryant":99,"www.zzhuang94.com":{"github":"github","github1":"github1","github2":"github2"}}]}#                                                            
+      [19:33:17] ~/code/shell/jq on git:master x $ cat json.json | jq                                     
+      {
+          "hzz": {
+              "kobe": [
+                  33,
+                  8,
+                  10,
+                  24
+              ],
+              "james": [
+                  [
+                      "23",
+                      "6",
+                      "23"
+                  ]
+              ]
+          },
+          "src": [
+              {
+                  "zzhuang94": 100,
+                  "kobe.bryant": 99,
+                  "www.zzhuang94.com": {
+                      "github": "github",
+                      "github1": "github1",
+                      "github2": "github2"
+                  }
+              }
+          ]
+      }
+      [19:33:19] ~/code/shell/jq on git:master x $ cat json.json | jq 'keys'                              
+      [
+          "hzz",
+          "src"
+      ]
+      [19:33:35] ~/code/shell/jq on git:master x $ cat json.json | jq 'keys[]'
+      "hzz"
+      "src"
+      [19:33:41] ~/code/shell/jq on git:master x $ cat json.json | jq '.["hzz"]' | jq 'keys'
+      [
+          "james",
+          "kobe"
+      ]
+      [19:33:53] ~/code/shell/jq on git:master x $ cat json.json | jq '.["hzz"]["kobe"]'    
+      [
+          33,
+          8,
+          10,
+          24
+      ]
+      [19:34:06] ~/code/shell/jq on git:master x $ cat json.json | jq '.["hzz"]["kobe"][]'
+      33
+      8
+      10
+      24
+      [19:34:08] ~/code/shell/jq on git:master x $ cat json.json | jq '.["hzz"][][]'      
+      33
+      8
+      10
+      24
+      [
+          "23",
+          "6",
+          "23"
+      ]
+      [19:34:12] ~/code/shell/jq on git:master x $ cat json.json | jq '.["hzz"][][][]'
+      jq: error (at <stdin>:0): Cannot iterate over number (33)
+      C:5[19:34:15] ~/code/shell/jq on git:master x $ cat json.json | jq '.["hzz"][][][]?'
+      "23"
+      "6"
+      "23"
+      [19:34:21] ~/code/shell/jq on git:master x $ cat json.json | jq '.["hzz"][][][]?'
