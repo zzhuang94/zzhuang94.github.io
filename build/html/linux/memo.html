@@ -253,6 +253,13 @@
 </pre></div>
 </td></tr></table></div>
 </li>
+<li><p class="first">批量删除tag</p>
+<div class="highlight-shell"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre> <span class="o">[</span>11:14:14<span class="o">]</span> ~/docs on git:master x <span class="nv">$ </span>git tag <span class="p">|</span> xargs git tag -d
+ <span class="o">[</span>11:14:14<span class="o">]</span> ~/docs on git:master x <span class="nv">$ </span>git tag <span class="p">|</span> awk <span class="s1">&#39;{print &quot;:&quot; $1}&#39;</span> <span class="p">|</span> xargs git push origin
+</pre></div>
+</td></tr></table></div>
+</li>
 </ul>
 </div>
 <div class="section" id="jq">

@@ -65,6 +65,14 @@ GIT
 
       [11:14:14] ~/docs on git:master x $ git push origin my-branch
 
+- 批量删除tag
+
+  .. code-block:: shell
+     :linenos:
+
+      [11:14:14] ~/docs on git:master x $ git tag | xargs git tag -d
+      [11:14:14] ~/docs on git:master x $ git tag | awk '{print ":" $1}' | xargs git push origin
+
 jq
 --
 
